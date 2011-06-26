@@ -3,6 +3,7 @@ require 'readline'
 require 'rubygems'
 require 'bud'
 require 'abbrev'
+require 'bud/crypto'
 
 TABLE_TYPES = ["table", "scratch", "channel"]
 
@@ -163,8 +164,8 @@ class ReblShell
   def self.welcome
     puts "Welcome to rebl, the interactive Bloom terminal."
     puts
-    puts "Type: " + @@escape_char + "h for help"
-    puts "      " + @@escape_char + "q to quit"
+    puts "Type: #{@@escape_char}h for help"
+    puts "      #{@@escape_char}q to quit"
     puts
   end
 
