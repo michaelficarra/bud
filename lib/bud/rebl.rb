@@ -52,8 +52,8 @@ class ReblShell
   @@abbrevs = @@commands.keys.abbrev
   @@exit_message = "Rebellion quashed."
 
-  # Starts a rebl shell.  
-  #-- 
+  # Starts a rebl shell.
+  #--
   # This function is not covered by testcases, but setup
   # and rebl_loop are.
   #++
@@ -71,9 +71,6 @@ class ReblShell
   # Performs setup as part of starting a rebl shell, and returns the instance of
   # LibRebl that is created; testcases call this directly.
   def self.setup
-    Signal.trap("INT") {do_exit}
-    Signal.trap("TERM") {do_exit}
-
     ipport = ARGV[0] ? ARGV[0].split(":") : []
     lib = LibRebl.new(*[(ipport[0] or "localhost"), (ipport[1] or 0)])
     setup_history
@@ -92,13 +89,17 @@ class ReblShell
 
   # One step of the rebl shell loop: processes one rebl shell line from stdin
   # and returns.  May raise an Exception.
-  def self.rebl_loop(lib,noreadline=false)
+  def self.rebl_loop(lib, noreadline=false)
     begin
-      line = Readline::readline('rebl> ') unless noreadline
-      line = gets if noreadline
+      if noreadline
+        line = gets
+      else
+        line = Readline::readline('rebl> ')
+      end
       do_exit if line.nil?
+      puts line unless $stdin.tty?
       line.strip!
-      return if line.empty?
+      return if line.empty? or line[0..0] == "#"
       Readline::HISTORY.push(line) unless noreadline
       split_line = line.split(" ")
       if line[0..0] == @@escape_char then
@@ -183,7 +184,7 @@ class ReblShell
     end
     @rebl_class_inst.stop_bg if @rebl_class_inst
     puts "\n" + @@exit_message
-    exit!
+    exit!(0)
   end
 end
 
