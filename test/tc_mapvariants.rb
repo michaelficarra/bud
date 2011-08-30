@@ -66,8 +66,8 @@ class TestMapVariants < Test::Unit::TestCase
                 [3,3]]
     p.tick
     assert_equal(3, p.out.length)
-    assert_equal(p.out.inspected, p.snout.inspected)
-    assert_equal(p.out.inspected, p.clout.inspected)
+    assert_equal("sn#{p.out.inspected}", p.snout.inspected.to_s)
+    assert_equal("cl#{p.out.inspected}", p.clout.inspected.to_s)
   end
   def test_still_annoying
     p = StillAnnoying.new

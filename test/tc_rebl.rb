@@ -148,7 +148,7 @@ class TestRebl < Test::Unit::TestCase
     rt.exec_rebl("/tick")
 
     # Check dump functionality
-    expected_output = "[\"a\", \"b\", \"b\", 1]\n[\"a\", \"b\", \"b\", 4]\n[\"a\", \"c\", \"b\", 2]\n[\"a\", \"c\", \"b\", 5]\n[\"a\", \"d\", \"b\", 3]\n[\"a\", \"d\", \"b\", 6]\n[\"a\", \"e\", \"b\", 4]\n[\"a\", \"e\", \"b\", 7]\n[\"b\", \"c\", \"c\", 1]\n[\"b\", \"d\", \"c\", 2]\n[\"b\", \"e\", \"c\", 3]\n[\"c\", \"d\", \"d\", 1]\n[\"c\", \"e\", \"d\", 2]\n[\"d\", \"e\", \"e\", 1]\n"
+    expected_output = "path: [\n  (\"a\", \"e\", \"b\", 7)\n  (\"a\", \"d\", \"b\", 3)\n  (\"c\", \"e\", \"d\", 2)\n  (\"b\", \"d\", \"c\", 2)\n  (\"a\", \"b\", \"b\", 1)\n  (\"b\", \"c\", \"c\", 1)\n  (\"a\", \"c\", \"b\", 2)\n  (\"a\", \"b\", \"b\", 4)\n  (\"d\", \"e\", \"e\", 1)\n  (\"c\", \"d\", \"d\", 1)\n  (\"a\", \"c\", \"b\", 5)\n  (\"a\", \"e\", \"b\", 4)\n  (\"b\", \"e\", \"c\", 3)\n  (\"a\", \"d\", \"b\", 6)]\n"
     actual_output = rt.exec_rebl("/dump path")
     assert_equal(expected_output, actual_output)
 
@@ -166,7 +166,7 @@ class TestRebl < Test::Unit::TestCase
 
     # Now check the contents of shortest to make sure that rule removal doesn't
     # cause un-derivation of previously derived tuples
-    expected_output = "[\"a\", \"b\", \"b\", 1]\n[\"a\", \"c\", \"b\", 2]\n[\"a\", \"d\", \"b\", 3]\n[\"a\", \"e\", \"b\", 4]\n[\"b\", \"c\", \"c\", 1]\n[\"b\", \"d\", \"c\", 2]\n[\"b\", \"e\", \"c\", 3]\n[\"c\", \"d\", \"d\", 1]\n[\"c\", \"e\", \"d\", 2]\n[\"d\", \"e\", \"e\", 1]\n"
+    expected_output = "shortest: [\n  (\"a\", \"b\", \"b\", 1)\n  (\"b\", \"d\", \"c\", 2)\n  (\"a\", \"c\", \"b\", 2)\n  (\"a\", \"d\", \"b\", 3)\n  (\"a\", \"e\", \"b\", 4)\n  (\"b\", \"e\", \"c\", 3)\n  (\"c\", \"e\", \"d\", 2)\n  (\"c\", \"d\", \"d\", 1)\n  (\"d\", \"e\", \"e\", 1)\n  (\"b\", \"c\", \"c\", 1)]\n"
     actual_output = rt.exec_rebl("/dump shortest")
     assert_equal(expected_output, actual_output)
   end
